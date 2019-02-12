@@ -69,18 +69,14 @@ class EventLoop:
         mask = fe.mask & (~delmask)
         epoll_mask = 0
 
-        print('del')
-        print(mask)
         if mask & AE_READABLE:
             epoll_mask |= select.EPOLLIN
         if mask & AE_WRITEABLE:
             epoll_mask |= select.EPOLLOUT
 
         if mask != AE_NONE:
-            print('modify %d' % fd)
             self.epoll.modify(fd, epoll_mask)
         else:
-            print('unregister %d' % fd)
             self.epoll.unregister(fd)
 
         # update maxfd can improve performance
